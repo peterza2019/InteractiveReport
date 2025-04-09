@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: B2C Digital Tourism Strategy 2025</title>
+    <!-- Link Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Link Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Include Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Basic Reset & Root Variables */
+        :root {
+            --primary-color: #0077cc; /* Professional Blue */
+            --secondary-color: #f4a261; /* Engaging Orange */
+            --accent-color: #2a9d8f; /* Teal Accent */
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --heading-font: 'Poppins', sans-serif;
+            --body-font: 'Poppins', sans-serif;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* Layout & Containers */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        header .logo {
+            width: 150px; /* Adjusted size */
+            height: auto;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-family: var(--heading-font);
+            font-size: 2.2em;
+            text-align: right;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0; /* Start hidden for animation */
+            animation-delay: calc(var(--section-index) * 0.15s); /* Stagger animation */
+        }
+
+        section h2 {
+            color: var(--primary-color);
+            font-family: var(--heading-font);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInLeft 0.6s ease-out forwards;
+            animation-delay: calc(var(--section-index) * 0.15s + 0.2s);
+            opacity: 0; /* Start hidden */
+        }
+
+        section h3 {
+            color: var(--accent-color);
+            font-family: var(--heading-font);
+            font-size: 1.3em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p, ul, table {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            background-color: #f0f7ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: start; /* Align icon and text top */
+            gap: 10px; /* Space between icon and text */
+        }
+
+         ul li i {
+            color: var(--secondary-color);
+            margin-top: 4px; /* Align icon slightly better */
+        }
+
+        strong {
+            color: var(--primary-color);
+        }
+
+        /* Chart Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Limit chart width */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            animation: pulse 1.5s ease-in-out infinite; /* Subtle pulse */
+            animation-delay: calc(var(--section-index) * 0.15s + 0.5s);
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2faff;
+        }
+
+        tr:hover {
+            background-color: #e6f3ff;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Insight & Stat Boxes */
+        .insight-box {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .insight-box i {
+            font-size: 1.8em;
+        }
+
+        .stat-highlight {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: block;
+            text-align: center;
+            margin: 15px 0;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+         /* Actionable Recommendations Styling */
+        .recommendations ul li {
+            background-color: #e8f5e9; /* Light Green */
+            border-left-color: #4CAF50; /* Green */
+         }
+         .recommendations ul li i {
+            color: #4CAF50;
+         }
+
+        /* Footer / Disclaimer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        /* Responsive Considerations (Basic) */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            header h1 {
+                font-size: 1.8em;
+                text-align: center;
+                margin-top: 10px;
+            }
+            section h2 {
+                font-size: 1.5em;
+            }
+             .chart-container {
+                max-width: 95%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+                        <h1>Interactive Report:<br>B2C Digital Tourism Strategy 2025</h1>
+        </header>
+
+        <section style="--section-index: 0;">
+            <h2><i class="fas fa-flag"></i> Executive Summary & Market Overview</h2>
+            <p>The digital travel market in 2025 is hyper-competitive, defined by rapid technological advancements (AI, personalization), evolving consumer demands (sustainability, unique experiences), and the dominance of major OTAs. This report provides actionable insights derived from industry leaders like Expedia, Booking.com, Skyscanner, and Amadeus, tailored for a new B2C tourism brand aiming for market leadership. Success hinges on strategic niche positioning, leveraging technology for efficiency and superior customer experience, building a customer-centric team, and agile growth strategies.</p>
+            <div class="insight-box">
+                <i class="fas fa-lightbulb"></i>
+                <p><strong>Key Insight:</strong> Market leadership requires not just competing on price, but differentiating through unique value, hyper-personalization, and exceptional service.</p>
+            </div>
+            <div class="chart-container" style="max-width: 400px;">
+                <h3>Traveler Priorities (Illustrative)</h3>
+                <canvas id="travelerPrioritiesChart"></canvas>
+            </div>
+            <p><strong>Fact:</strong> 78% of travelers prioritize eco-friendly accommodations, highlighting the growing importance of sustainability [4].</p>
+        </section>
+
+        <section style="--section-index: 1;">
+            <h2><i class="fas fa-chess-king"></i> 1. Strategic Leadership: Market Positioning</h2>
+            <h3>Objective: Understand trends and position the brand as a leader.</h3>
+            <p>Leaders like Expedia and Booking.com emphasize AI-driven personalization and building "connected trips." Skyscanner focuses on comparison and trust, while Amadeus powers the underlying technology enabling seamless experiences.</p>
+            <ul>
+                <li><i class="fas fa-robot"></i><strong>AI & Automation:</strong> Chatbots handle <strong>65%</strong> of inquiries at major OTAs (response < 2 mins) [1][5]. Expedia's AI app boosts conversion by <strong>18%</strong> via dynamic pricing [3].</li>
+                <li><i class="fas fa-leaf"></i><strong>Sustainability Focus:</strong> Booking.com's "Sustainable Travel" filters cater to the <strong>78%</strong> prioritizing eco-options [4].</li>
+                <li><i class="fas fa-vr-cardboard"></i><strong>Metaverse/VR Integration:</strong> Skyscanner’s VR previews reportedly boost bookings by <strong>27%</strong> [1][5].</li>
+                <li><i class="fas fa-handshake"></i><strong>Partnerships:</strong> Amadeus integrates airline baggage tracking, reducing complaints by <strong>33%</strong> [3]. Strategic alliances enhance credibility and reach.</li>
+            </ul>
+            <h3>Key Performance Indicators (KPIs) Focus:</h3>
+             <ul>
+                 <li><i class="fas fa-chart-line"></i><strong>Customer Lifetime Value (CLTV):</strong> Booking.com reports a <strong>22% YoY increase</strong> via personalized upsells [3].</li>
+                 <li><i class="fas fa-thumbs-up"></i><strong>Net Promoter Score (NPS):</strong> A core metric for gauging customer loyalty and satisfaction.</li>
+                 <li><i class="fas fa-dollar-sign"></i><strong>Gross Bookings Value (GBV) & Revenue Growth</strong></li>
+                 <li><i class="fas fa-bullseye"></i><strong>Conversion Rate & Look-to-Book Ratio</strong></li>
+             </ul>
+             <div class="chart-container">
+                 <h3>Top Strategic Pillars for Leaders (Illustrative)</h3>
+                 <canvas id="strategicPillarsChart"></canvas>
+             </div>
+        </section>
+
+        <section style="--section-index: 2;">
+            <h2><i class="fas fa-users"></i> 2. Team Leadership & Recruitment</h2>
+            <h3>Objective: Build and manage a high-performing, customer-centric team.</h3>
+            <p>Recruiting talent with digital literacy, destination expertise, and strong customer focus is paramount. Training must align with technology adoption and brand values.</p>
+            <ul>
+                 <li><i class="fas fa-user-graduate"></i><strong>Skill Prioritization:</strong> <strong>92%</strong> of Expedia consultants undergo quarterly AI tool training for enhanced personalization [6].</li>
+                 <li><i class="fas fa-hands-helping"></i><strong>Mentorship Success:</strong> Booking.com’s mentorship program reduced turnover by <strong>40%</strong> by pairing new hires with seniors [6].</li>
+                 <li><i class="fas fa-brain"></i><strong>Key Leadership Qualities:</strong> Agility (adapting to tools like Amadeus’ ShiftOptimizer improving task completion by <strong>29%</strong> [5]), Empathy, Tech Savviness, Customer Obsession.</li>
+                 <li><i class="fas fa-chalkboard-teacher"></i><strong>Effective Training:</strong> Focus on systems (CRM, booking), destination knowledge, sales techniques, brand values, and customer service excellence. Skyscanner’s "Voice of Customer" workshops drove a <strong>15%</strong> satisfaction increase [6].</li>
+            </ul>
+             <div class="insight-box">
+                <i class="fas fa-comments"></i>
+                <p><strong>Leadership Insight:</strong> Build a culture where customer feedback directly informs team training and operational adjustments.</p>
+            </div>
+        </section>
+
+        <section style="--section-index: 3;">
+            <h2><i class="fas fa-bullhorn"></i> 3. Digital Marketing & E-Commerce</h2>
+            <h3>Objective: Maximize conversions and drive online traffic.</h3>
+            <p>The digital battleground requires sophisticated SEO, SEM, compelling content, and social media engagement. Hyper-personalization and seamless e-commerce experiences are key differentiators.</p>
+            <h3>Key Trends & Tactics:</h3>
+            <ul>
+                <li><i class="fas fa-search"></i><strong>SEO/SEM:</strong> Dominated by giants; focus niche keywords. <strong>41%</strong> of travel queries are voice-based; optimize accordingly [1][5].</li>
+                <li><i class="fas fa-video"></i><strong>Video & Content:</strong> 360° virtual tours see <strong>94%</strong> higher engagement vs. static content [2]. Quality guides build authority.</li>
+                <li><i class="fas fa-mobile-alt"></i><strong>Mobile-First:</strong> Essential for booking and engagement.</li>
+                <li><i class="fas fa-users-cog"></i><strong>Personalization:</strong> Drives conversions and loyalty.</li>
+                <li><i class="fas fa-tachometer-alt"></i><strong>Data-Driven Optimization:</strong> Continuous A/B testing (Booking.com model).</li>
+            </ul>
+            <h3>Growth Strategy Impact:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tactic</th>
+                        <th>Reported Impact</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-magic"></i> Hyper-personalization</td>
+                        <td><strong>34%</strong> higher conversion rates [2][3]</td>
+                        <td>Expedia’s AI-curated itineraries</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-tags"></i> Dynamic Pricing</td>
+                        <td><strong>19%</strong> revenue increase [3]</td>
+                        <td>Skyscanner’s real-time fare alerts</td>
+                    </tr>
+                     <tr>
+                        <td><i class="fas fa-mobile-alt"></i> App-First Strategy</td>
+                        <td>Increased Loyalty & Direct Bookings</td>
+                        <td>Expedia One Key / Booking Genius</td>
+                    </tr>
+                </tbody>
+            </table>
+             <div class="chart-container">
+                 <h3>Illustrative Digital Marketing Mix (Typical OTA)</h3>
+                 <canvas id="marketingMixChart"></canvas>
+             </div>
+        </section>
+
+        <section style="--section-index: 4;">
+            <h2><i class="fas fa-cogs"></i> 4. Operations & Financial Management</h2>
+            <h3>Objective: Oversee operations efficiently for profitability.</h3>
+            <p>Leveraging technology for operational efficiency and data-driven financial management is crucial in the low-margin, high-volume digital travel market.</p>
+            <h3>Key Metrics & Technologies:</h3>
+            <ul>
+                 <li><i class="fas fa-door-open"></i><strong>Operational Efficiency:</strong> Contactless check-ins reduce front-desk labor costs by <strong>23%</strong> [1][5].</li>
+                 <li><i class="fas fa-chart-pie"></i><strong>Financial Optimization:</strong> Data-driven dynamic pricing increases profit margins by <strong>12–15%</strong> [3].</li>
+                 <li><i class="fas fa-users-cog"></i><strong>CRM Systems:</strong> Amadeus’ cloud PMS centralizes preferences, increasing upsell success by <strong>31%</strong> [5]. A robust CRM is fundamental.</li>
+                 <li><i class="fas fa-link"></i><strong>Blockchain Potential:</strong> Smart contracts automate <strong>28%</strong> of supplier payments, halving processing time [1]. (Emerging Tech).</li>
+                 <li><i class="fas fa-tachometer-alt"></i><strong>Data-Driven Decisions:</strong> Dashboards tracking Conversion Rate, ABV, CAC vs. LTV are essential.</li>
+            </ul>
+             <div class="insight-box">
+                <i class="fas fa-calculator"></i>
+                <p><strong>Financial Insight:</strong> Focus relentlessly on Unit Economics (profit per booking) and Customer Lifetime Value (LTV) to ensure sustainable growth.</p>
+            </div>
+        </section>
+
+        <section style="--section-index: 5;">
+            <h2><i class="fas fa-heart"></i> 5. Customer Experience & Brand Development</h2>
+            <h3>Objective: Develop a customer-centric brand that fosters loyalty.</h3>
+            <p>Exceptional CX is the ultimate differentiator. Personalization, seamless journeys, and authentic brand building drive engagement and retention.</p>
+            <h3>Innovations & Trends:</h3>
+             <ul>
+                 <li><i class="fas fa-brain"></i><strong>AI-Driven Journeys:</strong> Booking.com’s ChatGPT plugin generates tailored recommendations, improving repeat bookings by <strong>26%</strong> [2][5].</li>
+                 <li><i class="fas fa-thermometer-half"></i><strong>Real-Time Adaptation:</strong> Hotels using IoT for pre-check-in temperature adjustments see <strong>19%</strong> satisfaction boost [1][6]. Act on feedback instantly.</li>
+                 <li><i class="fas fa-hourglass-half"></i><strong>Slow & Sustainable Travel:</strong> 1 in 4 travelers book extended stays; promoting off-season/sustainable packages increases occupancy by <strong>37%</strong> [4].</li>
+                 <li><i class="fas fa-medal"></i><strong>Loyalty Programs:</strong> Expedia’s rewards app drives a <strong>42%</strong> increase in direct bookings via gamified perks [3].</li>
+                 <li><i class="fas fa-map-marked-alt"></i><strong>Journey Mapping:</strong> Understand touchpoints from 'Dreaming' to 'Sharing' to optimize interactions.</li>
+             </ul>
+            <div class="stat-highlight">
+                Focus on NPS: A Strong Predictor of Loyalty & Growth
+            </div>
+        </section>
+
+         <section style="--section-index: 6;">
+            <h2><i class="fas fa-rocket"></i> 6. Strategic Growth & Business Development</h2>
+            <h3>Objective: Identify new market opportunities and stay competitive.</h3>
+            <p>The market is constantly shifting. Agility, identifying niche opportunities, and strategic partnerships are key to capturing growth and maintaining a competitive edge.</p>
+            <h3>Opportunities & Strategies:</h3>
+             <ul>
+                 <li><i class="fas fa-briefcase"></i><strong>Niche Tourism:</strong> Skyscanner’s "Workcation" filters cater to <strong>58%</strong> of remote workers seeking blended travel [2][4]. Identify underserved niches.</li>
+                 <li><i class="fas fa-globe-asia"></i><strong>Geographic Expansion:</strong> Amadeus reports a <strong>45%</strong> surge in SE Asian bookings post-visa-free campaigns [3]. Target growth regions strategically.</li>
+                 <li><i class="fas fa-lightbulb"></i><strong>Predictive Analytics:</strong> AI forecasting demand achieves <strong>89%</strong> accuracy in inventory management [5][6].</li>
+                 <li><i class="fas fa-box-open"></i><strong>Dynamic Bundling:</strong> Agile pricing for flights + hotels + activities increases Average Order Value (AOV) by <strong>22%</strong> [3].</li>
+                 <li><i class="fas fa-hands-helping"></i><strong>Strategic Partnerships:</strong> Collaborate with DMOs, local providers, complementary brands.</li>
+             </ul>
+              <div class="chart-container">
+                 <h3>Growth Opportunity Matrix (Illustrative)</h3>
+                 <canvas id="growthMatrixChart"></canvas> {/* Using Radar Chart for matrix */}
+             </div>
+        </section>
+
+        <section class="recommendations" style="--section-index: 7;">
+             <h2><i class="fas fa-check-circle"></i> Actionable Recommendations</h2>
+             <p>Based on the analysis, here are key actions for [Your New B2C Tourism Brand Name]:</p>
+             <ul>
+                 <li><i class="fas fa-robot"></i><strong>Adopt AI-Powered Tools:</strong> Implement chatbots for efficiency and explore dynamic pricing engines to optimize revenue [1][3]. Start small, scale up.</li>
+                 <li><i class="fas fa-vr-cardboard"></i><strong>Invest in Immersive Content:</strong> Use high-quality video and consider VR/360° tours for key offerings to reduce booking hesitancy and boost engagement [1][5].</li>
+                 <li><i class="fas fa-plane-departure"></i><strong>Target Off-Peak & Niche Travelers:</strong> Develop unique 'slow travel' or specialized packages (e.g., wellness, adventure) with local partnerships to differentiate [4].</li>
+                 <li><i class="fas fa-seedling"></i><strong>Prioritize & Certify Sustainability:</strong> Actively promote eco-friendly options and consider integrating footprint calculators into booking flows [2][4].</li>
+                  <li><i class="fas fa-user-check"></i><strong>Build a Strong CRM Foundation:</strong> Invest early in a CRM to capture data for personalization and targeted retention marketing.</li>
+                  <li><i class="fas fa-mobile-alt"></i><strong>Optimize Mobile Experience:</strong> Ensure a seamless, fast, and intuitive mobile website and/or app.</li>
+             </ul>
+             <div class="stat-highlight">
+                Potential Growth: 30-40% Market Share Gain (in niche) within 12-18 months with focused execution.
+            </div>
+        </section>
+
+
+        <footer>
+            <p><strong>Disclaimer:</strong> This report synthesizes publicly available information, user-provided data points [citations refer to user input], and industry trends. It does not contain proprietary internal data from Expedia, Booking.com, Skyscanner, or Amadeus. Data points are illustrative and based on available sources or user input; always verify critical statistics with primary sources.</p>
+            <p>Report Generated: April 9, 2025</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Chart Configurations ---
+
+            // 1. Traveler Priorities Chart (Pie Chart)
+            const ctxPriorities = document.getElementById('travelerPrioritiesChart').getContext('2d');
+            new Chart(ctxPriorities, {
+                type: 'pie',
+                data: {
+                    labels: ['Price/Value', 'Experience/Uniqueness', 'Sustainability [4]', 'Ease of Booking', 'Safety/Trust'],
+                    datasets: [{
+                        label: 'Traveler Priorities',
+                        data: [35, 25, 18, 15, 7], // Illustrative % based on text (78% prioritize -> ~18% significant factor)
+                        backgroundColor: [
+                            'rgba(0, 119, 204, 0.7)', // Primary
+                            'rgba(244, 162, 97, 0.7)', // Secondary
+                            'rgba(42, 157, 143, 0.7)', // Accent
+                            'rgba(231, 111, 81, 0.7)',
+                            'rgba(150, 150, 150, 0.7)'
+                        ],
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: false }, // Title is in H3
+                        tooltip: { callbacks: { label: function(context) { return `${context.label}: ${context.raw}%`; } } }
+                    }
+                }
+            });
+
+            // 2. Strategic Pillars Chart (Bar Chart)
+            const ctxPillars = document.getElementById('strategicPillarsChart').getContext('2d');
+            new Chart(ctxPillars, {
+                type: 'bar',
+                data: {
+                    labels: ['AI & Personalization', 'Connected Trip', 'Loyalty Programs', 'Sustainability', 'B2B/Partnerships'],
+                    datasets: [{
+                        label: 'Focus Intensity (Illustrative)',
+                        data: [90, 85, 75, 65, 70], // Relative intensity scores
+                         backgroundColor: [
+                            'rgba(0, 119, 204, 0.7)',
+                            'rgba(42, 157, 143, 0.7)',
+                            'rgba(244, 162, 97, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                             'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 119, 204, 1)',
+                            'rgba(42, 157, 143, 1)',
+                            'rgba(244, 162, 97, 1)',
+                            'rgba(75, 192, 192, 1)',
+                             'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Horizontal Bar Chart
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false } // Title is in H3
+                    },
+                    scales: { x: { beginAtZero: true, max: 100 } }
+                }
+            });
+
+            // 3. Marketing Mix Chart (Doughnut Chart)
+            const ctxMarketing = document.getElementById('marketingMixChart').getContext('2d');
+            new Chart(ctxMarketing, {
+                type: 'doughnut',
+                data: {
+                    labels: ['SEM/PPC', 'SEO/Content', 'Metasearch', 'Affiliates/Partners', 'Direct/Loyalty', 'Social Media'],
+                    datasets: [{
+                        label: 'Marketing Spend/Focus',
+                        data: [40, 20, 15, 10, 10, 5], // Illustrative %
+                         backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                         borderColor: '#fff',
+                        borderWidth: 1
+                    }]
+                },
+                 options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: false }, // Title is in H3
+                        tooltip: { callbacks: { label: function(context) { return `${context.label}: ${context.raw}%`; } } }
+                    }
+                }
+            });
+
+             // 4. Growth Opportunity Matrix (Radar Chart)
+             const ctxGrowth = document.getElementById('growthMatrixChart').getContext('2d');
+             new Chart(ctxGrowth, {
+                type: 'radar',
+                data: {
+                    labels: ['Niche Deepening', 'Ancillary Services', 'Geographic Expansion', 'New Segments', 'Tech Innovation', 'Strategic Partnerships'],
+                    datasets: [{
+                        label: 'Opportunity Potential (New Brand)',
+                        data: [8, 7, 5, 6, 7, 9], // Score 1-10
+                        fill: true,
+                        backgroundColor: 'rgba(42, 157, 143, 0.4)', // Accent color transparent
+                        borderColor: 'rgba(42, 157, 143, 1)', // Accent color solid
+                        pointBackgroundColor: 'rgba(42, 157, 143, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(42, 157, 143, 1)'
+                    }, {
+                        label: 'Implementation Difficulty (New Brand)',
+                        data: [4, 5, 8, 7, 6, 5], // Score 1-10 (lower is easier)
+                         fill: true,
+                        backgroundColor: 'rgba(244, 162, 97, 0.3)', // Secondary color transparent
+                        borderColor: 'rgba(244, 162, 97, 1)', // Secondary color solid
+                        pointBackgroundColor: 'rgba(244, 162, 97, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(244, 162, 97, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                     plugins: {
+                        legend: { position: 'top' },
+                        title: { display: false } // Title is in H3
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: { stepSize: 2 }
+                        }
+                    }
+                }
+             });
+
+            // --- Simple Fade-In Animation on Scroll ---
+            // (More complex scroll animations usually require libraries,
+            // this uses basic CSS animation triggered via JS on load for simplicity)
+            const sections = document.querySelectorAll('section');
+            sections.forEach((section, index) => {
+                // The animation is handled by CSS `animation-delay` based on `--section-index`
+                // You could enhance this with Intersection Observer for true scroll triggering
+            });
+
+        });
+    </script>
+
+</body>
+</html>
